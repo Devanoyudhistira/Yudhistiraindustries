@@ -49,8 +49,10 @@ class usercontroller extends Controller
 
         if (Auth::attempt($creds)) {
             $request->session()->regenerate();
-            return redirect("/");
+            return redirect("/profile");
         }
+        return back();
+        
     }
     public function logout(Request $request)
     {

@@ -90,10 +90,7 @@
         </div>
 
         <footer class="flex h-60 w-screen items-center justify-around bg-white">
-            <p class="font-bebas w-120 pt-10 -ml-52 text-[25px] font-normal">
-                {{-- yudhistira industry adalah perusahaan teknologi fiksi yang saya gunakan sebagai nama website portfolio
-                saya,semua gambar maupun produk bukan milik saya. apabila ada kesamaan nama atau produk saya amohon maaf
-                sebesar-besarnya --}}
+            <p class="font-bebas w-120 pt-10 -ml-52 text-[25px] font-normal">                
                 yudhistira industry is a fiction company built to fill my portfolio,i do not own any image in this website. And if there is a same name or product from this website i deeply sorry
             </p>
 
