@@ -22,17 +22,17 @@ class usercontroller extends Controller
     }
     public function SignIn(Request $request)
     {
-        // $request->validate
-        // (
-        //     [
-        //         "email" => 'required|unique:posts|max:255',
-        //         "name" => 'required|unique:posts|max:255',
-        //         "password" => 'required'
-        //         ]
-        //     );
+        $request->validate
+        (
+            [
+                "email" => 'required|unique:users',
+                "name" => 'required|unique:users|max:255',
+                "password" => 'required'
+                ]
+            );
         $email = $request->input("email");
         $name = $request->input("name");
-        $password = $request->input("password");
+        $password = $request->input("password");        
         User::create([
             'name' => $name,
             'email' => $email,
@@ -41,7 +41,7 @@ class usercontroller extends Controller
             'admin' => false
         ]);
         $request->session()->regenerate();
-        return redirect("/");
+        return redirect("/login");
     }
     public function login(Request $request)
     {

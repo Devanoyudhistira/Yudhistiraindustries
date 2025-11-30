@@ -9,6 +9,7 @@ use App\Http\Middleware\welcomemiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\productsmiddleware;
 
 Route::get('/', function (Request $request) {
     $islogin = Auth::check();
@@ -22,5 +23,5 @@ Route::post('/loginpage', [usercontroller::class, "login"]);
 Route::get('/logout', [usercontroller::class, "logout"]);
 Route::get('/profile', [usercontroller::class, "profiles"])->middleware(loginpage::class);
 Route::post('/signin', [usercontroller::class, "SignIn"]);
-Route::get("/products",[products::class,"product"]);
+Route::get("/products",[products::class,"product"])->middleware(productsmiddleware::class) ;
 Route::post('/companyblog/postblog', action: [Companyblogcontroller::class,"postblog"]);
