@@ -14,14 +14,15 @@ use App\Http\Middleware\productsmiddleware;
 Route::get('/', function (Request $request) {
     $islogin = Auth::check();
     return view('Landing',["login" => $islogin]) ;
-})->middleware([welcomemiddleware::class]) ;
+})->middleware(welcomemiddleware::class) ;
 Route::get('/keuangan', [FinancialController::class, "financial"]);
 Route::get('/companyblog', [Companyblogcontroller::class, "companyblog"]);
-Route::get('/sign', [usercontroller::class, "loginpage"]);
-Route::get('/login', [usercontroller::class, "loginpage"]);
+Route::get('/sign', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
+Route::get('/login', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
 Route::post('/loginpage', [usercontroller::class, "login"]);
 Route::get('/logout', [usercontroller::class, "logout"]);
 Route::get('/profile', [usercontroller::class, "profiles"])->middleware(loginpage::class);
 Route::post('/signin', [usercontroller::class, "SignIn"]);
 Route::get("/products",[products::class,"product"])->middleware(productsmiddleware::class) ;
 Route::post('/companyblog/postblog', action: [Companyblogcontroller::class,"postblog"]);
+

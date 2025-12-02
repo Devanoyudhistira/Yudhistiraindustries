@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string("title");
             $table->text("blog");
-            $table->string("sender");
+            $table->foreignId('sender_id')
+      ->constrained(table: 'users', column: 'user_id')
+      ->onDelete('cascade');
+            $table->integer("likes")->default(0);
             $table->timestamps();
         });
     }

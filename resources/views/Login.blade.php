@@ -4,7 +4,6 @@
     @else
         <x-slot:title> Sign In </x-slot:title>
     @endif
-
     <div class="flex h-screen w-screen flex-col items-center justify-center gap-4 bg-zinc-950">
 
         @if ($errors->hasAny(['email', 'name']))
@@ -19,29 +18,32 @@
  method="POST" @endif
             class="w-160 h-100 border-3 font-orbit grid grid-cols-1 place-content-center place-items-center gap-y-8 rounded-2xl border-zinc-300 px-3 py-1 text-center text-xl font-medium text-zinc-200">
             @csrf
-            <h1 class="font-orbit -ml-2 text-2xl font-bold tracking-wider text-white"> Join Us </h1>
+            @if ($pagelogin)
+                <h1 class="font-orbit -ml-2 text-2xl font-bold tracking-wider text-white"> welcome back </h1>
+            @else
+                <h1 class="font-orbit -ml-2 text-2xl font-bold tracking-wider text-white"> Join Us </h1>
+            @endif
             @if (!$pagelogin)
-                <label x-data="{ email: '' }" for="email" class="ml-15 h-10 ">
+                <label x-data="{ email: '' }" for="email" class="ml-15 h-10">
                     <div class="flex items-center justify-start gap-3">
-                    <h1>Email</h1>
-                    <input x-model="email"
-                        class="rounded-xl border-2 border-zinc-200 px-2 py-1 focus:outline-none focus:ring-0"
-                        type="email" name="email" id="email">          
-                        </div>                              
+                        <h1>Email</h1>
+                        <input x-model="email" class="input" type="email" name="email" id="email">
+                    </div>
                 </label>
             @endif
-            <label x-data="{ name: '' }" for="name" autocorrect="off" class="h-10 relative gap-3">
+            <label x-data="{ name: '' }" for="name" autocorrect="off" class="relative h-10 gap-3">
                 <div class="flex items-center justify-start gap-3">
-                <h1>Username</h1>
-                <input x-model="name" class="rounded-xl border-2 border-zinc-200 px-2 py-1 focus:outline-none focus:ring-0"
-                    type="text" name="name" id="name">
+                    <h1>Username</h1>
+                    <input x-model="name" class="input" type="text" name="name" id="name">
                 </div>
-                <p class="font-bebas text-xl absolute left-40 duration-100 text-red-600" x-text="textcount(name,'name cannot be less then 8 character')"></p>                    
+                @if (!$pagelogin)
+                    <p class="font-bebas absolute left-40 text-xl text-red-600 duration-100"
+                        x-text="textcount(name,'name cannot be less then 8 character')"></p>
+                @endif
             </label>
             <label for="password" class="flex h-10 items-center justify-start gap-3">
                 <h1>Password</h1>
-                <input class="rounded-xl border-2 border-zinc-200 px-2 py-1 focus:outline-none focus:ring-0"
-                    type="password" name="password" id="password">
+                <input class="input" type="password" name="password" id="password">
             </label>
             <button
                 class="font-bebas border-3 inline-block rounded-xl border-zinc-200 px-4 py-1.5 text-3xl tracking-wider text-white duration-200 hover:bg-zinc-200 hover:text-zinc-900"
@@ -57,7 +59,7 @@
     </div>
 
     <script>
-        function textcount(textinput,massage) {
+        function textcount(textinput, massage) {
             const textlength = textinput.length < 8 && textinput.length >= 0
             return textlength ? massage : ""
         }

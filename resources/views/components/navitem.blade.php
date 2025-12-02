@@ -1,0 +1,1 @@
+<h2 class="after:inline-block after:absolute after:bg-white duration-200 hover:after:scale-100 after:scale-0 after:w-full after:h-0.5 after:bottom-0 after:left-0 relative" > <a  {{ $attributes }} > {{ $slot }} </a></h2>

@@ -8,8 +8,9 @@ class Companyblogmodel extends Model
 {
     protected $table ="Blogger";
      protected $fillable = [
-        'title',
-        'sender',
+        'title',        
         'blog', 
+        'sender_id', 
+        'likes', 
     ];
 }
