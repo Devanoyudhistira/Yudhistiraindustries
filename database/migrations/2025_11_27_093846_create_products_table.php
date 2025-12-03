@@ -18,7 +18,7 @@ return new class extends Migration {
                 ->constrained(table: 'users', column: 'user_id')
                 ->onDelete('cascade');
             $table->string("description");
-            $table->string("image");
+            $table->string("image")->default("");
             $table->decimal("rating", 2, 1)->default(0);
             $table->timestamps();
         });

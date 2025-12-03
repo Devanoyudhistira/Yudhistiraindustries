@@ -25,4 +25,6 @@ Route::get('/profile', [usercontroller::class, "profiles"])->middleware(loginpag
 Route::post('/signin', [usercontroller::class, "SignIn"]);
 Route::get("/products",[products::class,"product"])->middleware(productsmiddleware::class) ;
 Route::post('/companyblog/postblog', action: [Companyblogcontroller::class,"postblog"]);
+Route::post('/createproduct', action: [products::class,"createproduct"]);
+Route::post('/purchase', action: [products::class,"buyingproduct"]);
 
