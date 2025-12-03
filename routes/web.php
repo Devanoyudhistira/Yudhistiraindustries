@@ -16,7 +16,7 @@ Route::get('/', function (Request $request) {
     return view('Landing',["login" => $islogin]) ;
 })->middleware(welcomemiddleware::class) ;
 Route::get('/keuangan', [FinancialController::class, "financial"]);
-Route::get('/companyblog', [Companyblogcontroller::class, "companyblog"]);
+Route::get('/news', [Companyblogcontroller::class, "companyblog"]);
 Route::get('/sign', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
 Route::get('/login', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
 Route::post('/loginpage', [usercontroller::class, "login"]);
