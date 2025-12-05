@@ -54,5 +54,8 @@ class User extends Authenticatable
     public function username()
 {
     return 'name';
-}
+} 
+ public function purchased(){
+    return $this -> hasMany(invoicemodel::class,"buyer_id");
+ }
 }

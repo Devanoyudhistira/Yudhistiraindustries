@@ -31,11 +31,18 @@ class products extends Controller
     }
     public function buyingproduct(Request $request)
     {
-       $forminput = $request->only(["productId"]);
-        invoicemodel::createcreate([
-            "product_id" => $forminput["productId"],
-            "buyer_id" =>Auth::user()->user_id, ,
+       $productid = $request->input("productId");
+       $buyerid = $request->input("userid");
+        invoicemodel::create([
+            "product_id" => $productid,
+            "buyer_id" => $buyerid,
         ]);
-        redirect("/product");
+        return response()->json([
+            "status" => "success",
+            "received" => [
+                "product" => $productid,
+                "buyer"  => $buyerid
+            ]
+        ]);
     }
 }

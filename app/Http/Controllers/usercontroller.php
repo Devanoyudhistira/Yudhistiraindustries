@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\productsmodel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -61,7 +62,10 @@ class usercontroller extends Controller
     }
     public function profiles()
     {
-        $datausers = Auth::user();
-        return view("profile",["datauser" => $datausers]);
+        $datausers = Auth::user();        
+       $users = User::find(Auth::user()->getKey());
+       $purchasedData = $users->purchased()->pluck("product_id");
+       $products = productsmodel::find(1)->invoice;
+        return view("profile",["datauser" => $datausers,"purchased"=> $purchasedData,"product"=>$products]);
     }
 }
