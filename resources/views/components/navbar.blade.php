@@ -1,4 +1,4 @@
- <nav x-data="{ open: false }" class="flex h-auto fixed top-0 left-0 w-dvw justify-between items-center flex-row bg-zinc-950 px-6 py-1 text-[23px] font-medium font-orbit tracking-widest text-zinc-200">
+ <nav x-data="{ open: false }" class="flex h-auto fixed z-200 top-0 left-0 w-dvw justify-between items-center flex-row bg-zinc-950 px-6 py-1 text-[23px] font-medium font-orbit tracking-widest text-zinc-200">
      <h1 class=""> 
          {{ $slot }}          
     </h1>

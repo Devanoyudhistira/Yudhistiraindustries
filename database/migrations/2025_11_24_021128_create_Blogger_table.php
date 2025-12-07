@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('Blogger', function (Blueprint $table) {
             $table->id();
-            $table->string("title");
+            $table->string("title",30);
             $table->text("blog");
             $table->foreignId('sender_id')
       ->constrained(table: 'users', column: 'user_id')
-      ->onDelete('cascade');
-            $table->integer("likes")->default(0);
+      ->onDelete('cascade');            
             $table->timestamps();
         });
     }

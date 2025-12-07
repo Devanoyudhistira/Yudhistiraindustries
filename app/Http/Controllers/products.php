@@ -19,15 +19,16 @@ class products extends Controller
     }
     public function createproduct(Request $request)
     {
-       $forminput = $request->except(["rating"]);       
+       $forminput = $request->input();  
+      $productimage = $request->file("productimage")->store("productimage","public");
         productsmodel::create([
-            "price" => 21.80,
-            "productname" => $forminput[""],
-            "seller_id" => Auth::user()->user_id,
-            "description" => "this is a cctv",
-            "rating" => 0
+            "price" => (float)$forminput["productprice"],
+            "productname" => $forminput["productname"],
+            "seller_id" => Auth::user()->getkey(),
+            "description" => $forminput["description"],    
+            "image"        => $productimage
         ]);              
-        redirect("/product");
+        return redirect("/profile");        
     }
     public function buyingproduct(Request $request)
     {

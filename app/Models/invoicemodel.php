@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class invoicemodel extends Model
 {
@@ -17,7 +17,14 @@ class invoicemodel extends Model
         "buyer_id"
     ];
 
-    public function product() :HasOne{
-        return $this::hasOne(productsmodel::class,"");
+       public function product()
+    {
+        return $this->belongsTo(productsmodel::class, "product_id", "id");
     }
+
+    public function buyer()
+    {
+        return $this->belongsTo(User::class, "buyer_id", "user_id");
+    }
+
 }

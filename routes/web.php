@@ -15,7 +15,7 @@ Route::get('/', function (Request $request) {
     $islogin = Auth::check();
     return view('Landing',["login" => $islogin]) ;
 })->middleware(welcomemiddleware::class) ;
-Route::get('/keuangan', [FinancialController::class, "financial"]);
+Route::get('/singlenews/{newsid}', [Companyblogcontroller::class, "singlenews"]);
 Route::get('/news', [Companyblogcontroller::class, "companyblog"]);
 Route::get('/sign', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
 Route::get('/login', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
@@ -25,6 +25,6 @@ Route::get('/profile', [usercontroller::class, "profiles"])->middleware(loginpag
 Route::post('/signin', [usercontroller::class, "SignIn"]);
 Route::get("/products",[products::class,"product"])->middleware(productsmiddleware::class) ;
 Route::post('/companyblog/postblog', action: [Companyblogcontroller::class,"postblog"]);
-Route::post('/createproduct', action: [products::class,"createproduct"]);
+Route::post('/product', action: [products::class,"createproduct"]);
 Route::post('/purchase', action: [products::class,"buyingproduct"]);
 

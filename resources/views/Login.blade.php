@@ -6,8 +6,8 @@
     @endif
     <div class="flex h-screen w-screen flex-col items-center justify-center gap-4 bg-zinc-950">
 
-        @if ($errors->hasAny(['email', 'name']))
-            <h1 class="font-bebas text-3xl font-medium text-red-700"> this account is already exist </h1>
+        @if ($errors->hasAny(['email', 'name','password']))
+            <h1 class="font-bebas text-3xl font-medium text-red-700"> operation failed try again </h1>
         @endif
 
         <h1 class="font-orbit text-center text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\invoicemodel;
 use App\Models\productsmodel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class usercontroller extends Controller
     }
     public function loginpage(Request $request)
     {
-        $uri = request()->path();        
+        $uri = request()->path();
         return view("login", ["pagelogin" => $uri === "login"]);
     }
     public function SignIn(Request $request)
@@ -29,16 +30,15 @@ class usercontroller extends Controller
                 "email" => 'required|unique:users',
                 "name" => 'required|unique:users|max:255',
                 "password" => 'required'
-                ]
-            );
+            ]
+        );
         $email = $request->input("email");
         $name = $request->input("name");
-        $password = $request->input("password");        
+        $password = $request->input("password");
         User::create([
             'name' => $name,
             'email' => $email,
-            'password' => $password,
-            'role' => 'pegawai',
+            'password' => $password,            
             'admin' => false
         ]);
         $request->session()->regenerate();
@@ -53,19 +53,28 @@ class usercontroller extends Controller
             return redirect("/profile");
         }
         return back();
-        
+
     }
     public function logout(Request $request)
     {
-            $request->session()->flush();
-            return redirect("http://127.0.0.1:8000/sign");
+        $request->session()->flush();
+        return redirect("http://127.0.0.1:8000/sign");
     }
-    public function profiles()
-    {
-        $datausers = Auth::user();        
-       $users = User::find(Auth::user()->getKey());
-       $purchasedData = $users->purchased()->pluck("product_id");
-       $products = productsmodel::find(1)->invoice;
-        return view("profile",["datauser" => $datausers,"purchased"=> $purchasedData,"product"=>$products]);
-    }
+ public function profiles()
+{
+    $user = Auth::user();
+
+    $invoices = $user->purchased()->with('product')->get();
+    $seller = User::find(1)->selled;
+    $products = $invoices->pluck('product.productname');
+    $productprices = $invoices->pluck('product.price');
+    return view("profile", [
+        "datauser"  => $user,
+        "purchased" => $invoices,
+        "products"   => $products,
+        "productprice"   => $productprices,
+        "seller"=>$seller
+    ]);
+}
+
 }

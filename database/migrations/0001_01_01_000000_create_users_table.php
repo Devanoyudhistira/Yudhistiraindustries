@@ -16,9 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role');
-            $table->boolean('admin')->default(false);
-            $table->integer("like")->default(0);
+            $table->string('role')->default("customer");
+            $table->boolean('admin')->default(false);            
             $table->json("wishlist")->nullable();
             $table->json("carting")->nullable();
             $table->rememberToken();

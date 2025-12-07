@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class productsmodel extends Model
 {
@@ -18,7 +18,7 @@ class productsmodel extends Model
     public function seller(){
         return $this->belongsTo(User::class,"seller_id");
     }
-    public function invoice():HasMany{
-        return $this->hasMany(invoicemodel::class,"product_id");
+    public function invoice():HasOne{
+        return $this->hasOne(invoicemodel::class,"product_id");
     }
 }
