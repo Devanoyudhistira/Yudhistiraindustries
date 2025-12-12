@@ -17,8 +17,11 @@ Route::get('/', function (Request $request) {
 })->middleware(welcomemiddleware::class) ;
 Route::get('/singlenews/{newsid}', [Companyblogcontroller::class, "singlenews"]);
 Route::get('/news', [Companyblogcontroller::class, "companyblog"]);
-Route::get('/sign', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
+Route::get('/sign', [usercontroller::class, "signinpage"])->middleware(welcomemiddleware::class);
 Route::get('/login', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
+Route::get('/userprofile/{id}', [usercontroller::class, "userprofile"]);
+Route::get("/makenews",[Companyblogcontroller::class,"makenews"]);
+Route::post('/deleteproduct', [products::class, "delete"]);
 Route::post('/loginpage', [usercontroller::class, "login"]);
 Route::get('/logout', [usercontroller::class, "logout"]);
 Route::get('/profile', [usercontroller::class, "profiles"])->middleware(loginpage::class);
@@ -27,4 +30,7 @@ Route::get("/products",[products::class,"product"])->middleware(productsmiddlewa
 Route::post('/companyblog/postblog', action: [Companyblogcontroller::class,"postblog"]);
 Route::post('/product', action: [products::class,"createproduct"]);
 Route::post('/purchase', action: [products::class,"buyingproduct"]);
+Route::post('/postblog', action: [Companyblogcontroller::class, "postblog"]);
+Route::get('/updateuser', action: [usercontroller::class, "updateview"]);
+Route::post('/updateprofile', action: [usercontroller::class, "updateuser"]);
 

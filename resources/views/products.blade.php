@@ -3,31 +3,44 @@
     <x-navbar>
         Product page
     </x-navbar>
-    <main class="mt-12 h-auto w-screen">
+    <main class="mt-12 h-auto w-screen" x-data={flashmassage:true}>
+        @if (session('success'))
+            <div x-transition x-show="flashmassage"
+                class="w-130 absolute left-[32%] top-20 flex h-40 flex-col items-center justify-between rounded-xl border-2 border-black bg-zinc-100 px-1 py-3 text-center">
+                <h1 class="font-zalando text-3xl font-semibold text-green-400">
+                    {{ Str::limit(session('success'), 40) }}
+                </h1>
+                <button
+                    class="focus:scale-85 font-bebas inline-block rounded-xl border-2 border-green-400 px-5 py-1 text-3xl font-semibold transition"
+                    x-on:click="flashmassage = false"> Oke </button>
+            </div>
+        @endif
         <h1 class="font-bebas text-4xl">Products</h1>
-        <article x-data="{ open: false, id: 3,name: '', price: '', seller: '' }" class="grid grid-cols-4 gap-2 pl-9">
+        <article x-data="{ open: false, id: 3, name: '', price: '', seller: '', image: '' }" class="grid grid-cols-4 gap-2 pl-9">
             @foreach ($products as $product)
-                <div id="productCard" x-data="{ productname: '{{ $product['productname'] }}',productid:'{{ $product['id']  }}', productprice: '${{ $product['price'] }}', productseller: '{{ $product->seller->name }}' }"
+                <div id="productCard" x-data="{ productname: '{{ $product['productname'] }}', productid: '{{ $product['id'] }}', productprice: '${{ $product['price'] }}', productseller: '{{ $product->seller->name }}', productimage: '{{ $product['image'] }}' }"
                     class="w-54 h-75 flex flex-col items-center border-2 border-zinc-100 bg-zinc-900">
-                    <img src={{ asset('image/product2.jpg') }} class="mt-5 h-[40%] w-[90%]"></img>
+                    <img src={{ asset('storage/' . $product['image']) }}
+                        class="mt-5 h-[40%] w-[90%] object-cover object-center"></img>
                     <div
                         class="font-bebas flex w-[90%] justify-between text-2xl font-medium tracking-wider text-zinc-100">
                         <h3>{{ $product['productname'] }}</h3>
                         <h3> <i class="bi bi-star text-2xl text-yellow-600"></i> 5.0 </h3>
                     </div>
-                    <button x-on:click="name = productname;price = productprice;open = true;seller = productseller,id = productid"
+                    <button
+                        x-on:click="name = productname;price = productprice;open = true;seller = productseller,id = productid;image=productimage "
                         class="font-bebas mt-20 flex h-10 w-[90%] items-center justify-center rounded-xl bg-zinc-200 px-1 py-3 text-2xl font-medium tracking-wider text-zinc-950">
                         <i class="bi bi-cart"></i> ${{ $product['price'] }} </button>
                 </div>
             @endforeach
-            <div x-transition x-show="open"
-                class="z-2000 absolute left-0 top-0 flex h-screen w-screen px-3 flex-col bg-zinc-200">
-                <button class="absolute left-10 -top-5 items-self-start self-start justify-self-start text-[80px]"
+            <div x-transition x-show="open" x-data="{ buying: false }"
+                class="z-2000 absolute left-0 top-0 flex h-screen w-screen flex-col bg-zinc-200 px-3">
+                <button class="items-self-start absolute -top-5 left-10 self-start justify-self-start text-[80px]"
                     x-on:click="open = false"> <i class="bi bi-x font-black text-red-600"></i> </button>
-                <div class="mt-18 flex h-130 w-full">
-                    <img src="{{ asset('image/product3.jpg') }}" id="productimage"
+                <div class="mt-18 h-130 flex w-full">
+                    <img :src="'{{ asset('storage') }}/' + image" id="productimage"
                         class="h-[70%] w-[70%] object-cover"></img>
-                    <div class="flex h-[70%] w-full flex-col bg-zinc-100 border-l-2 border-black">
+                    <div class="flex h-[70%] w-full flex-col border-l-2 border-black bg-zinc-100">
                         <h1 class="font-bebas ml-4 text-4xl font-medium" x-text="name"> </h1>
                         <div class="flex w-full flex-col gap-2">
                             <x-product-attr>
@@ -38,8 +51,11 @@
                                 <h4>price:</h4>
                                 <h4 x-text="price"></h4>
                             </x-product-attr>
-                            <x-product-attr><h4>seller:</h4>
-                                <h4 x-text="seller"> </h4>
+                            <x-product-attr>
+                                <h4>seller:</h4>
+                                <a href="user/">
+                                    <h4 x-text="seller"> </h4>
+                                </a>
                             </x-product-attr>
                             <x-product-attr>
                                 <h4>arrival:</h4>
@@ -56,36 +72,39 @@
                         </div>
                     </div>
                 </div>
-                <div x-data="button">
-                    <button :click="buyproduct(id,'{{ Auth::user()->getkey() }}')"
-                        class="items-self-center font-bebas text-xinc-200 align-center  ml-60 w-[60%] justify-self-center rounded-xl border-2 bg-zinc-900 text-center text-2xl font-semibold tracking-wider text-zinc-100 duration-100 hover:border-black hover:bg-zinc-200 hover:text-zinc-900">
-                        <i class="bi bi-cart"></i> buy </button>
-                </div>
+                <form method="POST" action="/purchase" x-data="button">
+                    @csrf
+                    <input hidden :value="id" name="productId">
+                    <input hidden value={{ Auth::user()->getkey() }} name="userid">
+                    <button type="submit" :disabled="buying" x-on:submit="buying = true"
+                        class="items-self-center font-bebas text-xinc-200 align-center ml-60 w-[60%] justify-self-center rounded-xl border-2 bg-zinc-900 text-center text-2xl font-semibold tracking-wider text-zinc-100 duration-100 hover:border-black hover:bg-zinc-200 hover:text-zinc-900">
+                        <i class="bi bi-cart"></i> <span x-text="buying ? 'loading' : 'buy 222' "></span> </button>
+                </form>
             </div>
         </article>
     </main>
     <script>
-       document.addEventListener('alpine:init', () => {
-    Alpine.data("button", () => ({
-        buyproduct(productid, buyer) {
-            fetch("/purchase", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    productId: productid,
-                    userid: buyer
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Server response:", data);
-            });
-        }
-    }))
-})
-
+        document.addEventListener('alpine:init', () => {
+            Alpine.data("button", () => ({
+                buyproduct(productid, buyer) {
+                    fetch("/purchase", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                                    .content
+                            },
+                            body: JSON.stringify({
+                                productId: productid,
+                                userid: buyer
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("Server response:", data);
+                        });
+                }
+            }))
+        })
     </script>
 </x-layout>

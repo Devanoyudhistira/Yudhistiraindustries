@@ -25,11 +25,9 @@ class User extends Authenticatable
         'password',
         'role', 
         'admin',
-        'like',
-        'wishlist',
-        'carting',
+        'like', 
+        'profileimage'
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
