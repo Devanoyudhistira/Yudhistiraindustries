@@ -5,15 +5,9 @@
     </x-navbar>
     <main class="mt-12 h-auto w-screen" x-data={flashmassage:true}>
         @if (session('success'))
-            <div x-transition x-show="flashmassage"
-                class="w-130 absolute left-[32%] top-20 flex h-40 flex-col items-center justify-between rounded-xl border-2 border-black bg-zinc-100 px-1 py-3 text-center">
-                <h1 class="font-zalando text-3xl font-semibold text-green-400">
-                    {{ Str::limit(session('success'), 40) }}
-                </h1>
-                <button
-                    class="focus:scale-85 font-bebas inline-block rounded-xl border-2 border-green-400 px-5 py-1 text-3xl font-semibold transition"
-                    x-on:click="flashmassage = false"> Oke </button>
-            </div>
+            <x-flash-massage :success="true">
+                {{ Str::limit(session('success'), 40)  }}                
+            </x-flash-massage>
         @endif
         <h1 class="font-bebas text-4xl">Products</h1>
         <article x-data="{ open: false, id: 3, name: '', price: '', seller: '', image: '' }" class="grid grid-cols-4 gap-2 pl-9">
@@ -72,13 +66,16 @@
                         </div>
                     </div>
                 </div>
-                <form method="POST" action="/purchase" x-data="button">
+                <form method="POST" x-on:submit="buying = true" x-data="button" action="/purchase" >
                     @csrf
                     <input hidden :value="id" name="productId">
                     <input hidden value={{ Auth::user()->getkey() }} name="userid">
-                    <button type="submit" :disabled="buying" x-on:submit="buying = true"
-                        class="items-self-center font-bebas text-xinc-200 align-center ml-60 w-[60%] justify-self-center rounded-xl border-2 bg-zinc-900 text-center text-2xl font-semibold tracking-wider text-zinc-100 duration-100 hover:border-black hover:bg-zinc-200 hover:text-zinc-900">
-                        <i class="bi bi-cart"></i> <span x-text="buying ? 'loading' : 'buy 222' "></span> </button>
+                    <button type="submit" :disabled="buying"
+                        class="items-self-center font-bebas text-xinc-200 align-center ml-60 w-[60%] justify-self-center rounded-xl border-2  text-center text-2xl font-semibold tracking-wider text-zinc-100 duration-100  "  :class="{
+                                'bg-zinc-200 text-zinc-950': buying,
+                                'bg-zinc-900 hover:text-zinc-900 hover:border-black hover:bg-zinc-200': !buying
+                            }">
+                        <i class="bi bi-cart"></i> <span x-text="buying ? 'loading' : 'purchase' "></span> </button>
                 </form>
             </div>
         </article>

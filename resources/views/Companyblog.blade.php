@@ -30,7 +30,7 @@
                         </div>
                         <h3 id="newstimeline" class="font-bebas mr-2 text-[16px] font-medium">{{$blog["created_at"]->diffForHumans()}}</h3>
                     </div>
-                    <p class="font-zalando ml-3 text-[16px] font-medium"> {{Str::limit($blog["blog"],80)}} </p>
+                    <p class="font-zalando ml-3 text-[16px] font-medium"> {{Str::limit($blog["blog"],20)}} </p>
                     <h1 class="font-bebas ml-3 text-xl font-thin text-blue-500"><a href="/singlenews/{{$blog["id"]}}"> read more <i
                     class="bi bi-chevron-double-right"></i> </a></h1>
                 </article>

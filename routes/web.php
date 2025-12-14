@@ -1,36 +1,52 @@
 <?php
 
-use App\Http\Controllers\Companyblogcontroller;
-use App\Http\Controllers\FinancialController;
-use App\Http\Controllers\products;
-use App\Http\Controllers\usercontroller;
-use App\Http\Middleware\loginpage;
-use App\Http\Middleware\welcomemiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Companyblogcontroller;
+use App\Http\Controllers\usercontroller;
+use App\Http\Controllers\products;
+use App\Http\Middleware\welcomemiddleware;
+use App\Http\Middleware\loginpage;
 use App\Http\Middleware\productsmiddleware;
 
-Route::get('/', function (Request $request) {
-    $islogin = Auth::check();
-    return view('Landing',["login" => $islogin]) ;
-})->middleware(welcomemiddleware::class) ;
-Route::get('/singlenews/{newsid}', [Companyblogcontroller::class, "singlenews"]);
-Route::get('/news', [Companyblogcontroller::class, "companyblog"]);
-Route::get('/sign', [usercontroller::class, "signinpage"])->middleware(welcomemiddleware::class);
-Route::get('/login', [usercontroller::class, "loginpage"])->middleware(welcomemiddleware::class);
-Route::get('/userprofile/{id}', [usercontroller::class, "userprofile"]);
-Route::get("/makenews",[Companyblogcontroller::class,"makenews"]);
-Route::post('/deleteproduct', [products::class, "delete"]);
-Route::post('/loginpage', [usercontroller::class, "login"]);
-Route::get('/logout', [usercontroller::class, "logout"]);
-Route::get('/profile', [usercontroller::class, "profiles"])->middleware(loginpage::class);
-Route::post('/signin', [usercontroller::class, "SignIn"]);
-Route::get("/products",[products::class,"product"])->middleware(productsmiddleware::class) ;
-Route::post('/companyblog/postblog', action: [Companyblogcontroller::class,"postblog"]);
-Route::post('/product', action: [products::class,"createproduct"]);
-Route::post('/purchase', action: [products::class,"buyingproduct"]);
-Route::post('/postblog', action: [Companyblogcontroller::class, "postblog"]);
-Route::get('/updateuser', action: [usercontroller::class, "updateview"]);
-Route::post('/updateprofile', action: [usercontroller::class, "updateuser"]);
 
+Route::middleware(welcomemiddleware::class)->group(function () {
+    Route::get('/', function (Request $request) {
+        return view('Landing', ["login" => Auth::check()]);
+    });
+
+    Route::get('/sign', [usercontroller::class, "signinpage"]);
+    Route::get('/login', [usercontroller::class, "loginpage"]);
+});
+
+Route::controller(usercontroller::class)->group(function () {
+    Route::get('/userprofile/{id}', 'userprofile');
+    Route::get('/logout', 'logout');
+    Route::post('/signin', 'SignIn');
+    Route::post('/loginpage', 'login');
+    Route::get('/updateuser', 'updateview');
+    Route::post('/updateprofile', 'updateuser');
+
+    Route::middleware(loginpage::class)->group(function () {
+        Route::get('/profile', 'profiles');
+    });
+});
+
+Route::controller(Companyblogcontroller::class)->group(function () {
+    Route::get('/news', 'companyblog');
+    Route::get('/singlenews/{newsid}', 'singlenews');
+    Route::post('/companyblog/postblog', 'postblog');
+    Route::post('/postblog', 'postblog'); // if duplicate on purpose
+    Route::get('/makenews', 'makenews');
+});
+
+Route::controller(products::class)->group(function () {
+    Route::post('/deleteproduct', 'delete');
+    Route::post('/product', 'createproduct');
+    Route::post('/purchase', 'buyingproduct');
+
+    Route::middleware(productsmiddleware::class)->group(function () {
+        Route::get('/products', 'product');
+    });
+});

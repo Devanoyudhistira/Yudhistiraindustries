@@ -19,7 +19,7 @@ class Companyblogcontroller extends Controller
     }
     public function singlenews(Request $request){ 
         $url = $request->newsid;
-        $news = Companyblogmodel::find($url);       
+        $news = Companyblogmodel::find($url);                       
         return View("news",["news" => $news]);
     }
     public function postblog(Request $request){

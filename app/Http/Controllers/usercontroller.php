@@ -6,6 +6,7 @@ use App\Models\invoicemodel;
 use App\Models\productsmodel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 
@@ -31,8 +32,9 @@ class usercontroller extends Controller
         (
             [
                 "email" => 'required|unique:users',
-                "name" => 'min:7|required|unique:users|max:255',
-                "password" => 'required'
+                "name" => 'min:8|required|unique:users|max:255',
+                "password" => 'required|min:8',
+                "profileimage" => "required|image|max:10000"
             ]
         );
         $email = $request->input("email");
@@ -104,17 +106,22 @@ class usercontroller extends Controller
     }
 
     public function updateuser(Request $request){
+         $request->validate
+        (
+            [          
+                "newname" => 'min:8|required|unique:users|max:255',                
+                "newimage" => "required|image|max:10000"
+            ]
+        );
        $usertarget = User::find(Auth::user()->getKey());
-    //    $input = $request->input();
+       $newinput = $request->input();
+       Storage::disk("public")->delete($usertarget["profileimage"]);
+      $storefile = $request->file("newimage")->store("proflleimage", "public");
       $updateresult = $usertarget->update(
-        ['name' => "devanooo0000uuu",
-            'email' => "nabihhjhla@gmail.com",
-            'password' => "password",
-            'admin' => false,
-             "profileimage" => ""]
-             // all this data was just a test on local and will be change after this
-       );
-       dd($updateresult);
+        ['name' => $newinput["newname"],                                    
+             "profileimage" => $storefile]             
+       );              
+       return redirect("profile")->with("success","profile has been updated");
     } 
     public function updateview(){
        return view("updateprofile");

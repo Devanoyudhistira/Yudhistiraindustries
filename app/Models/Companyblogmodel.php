@@ -12,6 +12,7 @@ class Companyblogmodel extends Model
         'title',        
         'blog', 
         'sender_id', 
+    "thumbnail".
         'likes', 
     ];
 

@@ -1,6 +1,5 @@
-<label for={{ $inputtype }} autofocus="true" class="font-bebas flex flex-col text-xl">
+<label for="" autofocus="true" class="font-bebas flex flex-col text-xl">
     <h1> {{ $inputitle }} </h1>
     <input {{ $attributes }} autocapitalize="off" autocomplete="off"
-        class="focus:none w-[90%] font-zalando rounded-xl border-2 border-black py-2 pl-2" type="text"
-        name={{ $inputtype }} id={{ $inputtype }}>
+        class="focus:none w-[90%] font-zalando rounded-xl border-2 border-black py-2 pl-2" >
 </label>
