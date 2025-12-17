@@ -31,15 +31,33 @@ class usercontroller extends Controller
         $request->validate
         (
             [
-                "email" => 'required|unique:users',
-                "name" => 'min:8|required|unique:users|max:255',
+                "email" => 'bail|required|unique:users',
+                "name" => 'min:8|required|unique:users|max:25',
                 "password" => 'required|min:8',
-                "profileimage" => "required|image|max:10000"
+                "profileimage" => "image|max:10240"
+            ],
+            [
+                "email.unique" => "the email is already exist",
+                "email.required" => "the email is missing",
+                "name.required" => "the username is missing",
+                "name.min" => "the username must more than 8",
+                "name.max" => "the username must less than 25",
+                "name.unique" => "the username is already used",
+                "password.required" => "the password is missing",
+                "password.min" => "the password is must more than 8 character",
+                "profileimage.image" => "file is not an image (jpg,png)",
+                "profileimage.max" => "image size must less than 10 mb",
             ]
         );
         $email = $request->input("email");
         $name = $request->input("name");
-        $image = $request->file("profileimage")->store("proflleimage", "public");
+        $image = $request->file("profileimage");
+        if($image){
+            $image->store("proflleimage", "public");
+        }
+        else {
+            $image = "profileimage/profile.jpeg";
+        }
         $password = $request->input("password");
         $createuser = User::create([
             'name' => $name,
@@ -74,14 +92,22 @@ class usercontroller extends Controller
     }
     public function userprofile(Request $request)
     {
-        $userid = $request->is("id");
+        $userid = $request["id"];
         $user = User::find($userid);
         $usersell = User::find($userid)->selled;
         $invoices = $user->purchased()->with('product')->get();
+        $products = $invoices->pluck('product.productname');
         $productprices = $invoices->pluck('product.price');
         $productimage = $invoices->pluck('product.image');
-        $productdate = $invoices->pluck('product.created_at');
-        return view("userprofile",["user" => $user]);
+        $productdate = $invoices->pluck('product.created_at');        
+        return view("userprofile", [
+            "datauser" => $user,
+            "purchased" => $invoices,
+            "products" => $products,
+            "productprice" => $productprices,
+            "productimage" => $productimage,
+            "seller" => $usersell,
+            "purchasedate" => $productdate,]);
     }
     public function profiles()
     {
@@ -93,7 +119,7 @@ class usercontroller extends Controller
         $productprices = $invoices->pluck('product.price');
         $productimage = $invoices->pluck('product.image');
         $productdate = $invoices->all();
-        // dd($productdate);
+        // dd($productprices);
         return view("profile", [
             "datauser" => $user,
             "purchased" => $invoices,
@@ -101,30 +127,36 @@ class usercontroller extends Controller
             "productprice" => $productprices,
             "productimage" => $productimage,
             "seller" => $seller,
-            "purchasedate" => $productdate,            
+            "purchasedate" => $productdate,
         ]);
     }
 
-    public function updateuser(Request $request){
-         $request->validate
+    public function updateuser(Request $request)
+    {
+        $newinput = $request->input();
+        $request->validate
         (
-            [          
-                "newname" => 'min:8|required|unique:users|max:255',                
+            [
+                "newname" => 'bail|min:8|required|unique:users,name|max:25',
                 "newimage" => "required|image|max:10000"
+            ],
+            [
+                "newname.required" => "the username is missing",
+                "newname.min" => "the username must more than 8",
+                "newname.max" => "the username must less than 25",
+                "newname.unique" => "the username is already used",
             ]
         );
-       $usertarget = User::find(Auth::user()->getKey());
-       $newinput = $request->input();
-       Storage::disk("public")->delete($usertarget["profileimage"]);
-      $storefile = $request->file("newimage")->store("proflleimage", "public");
-      $updateresult = $usertarget->update(
-        ['name' => $newinput["newname"],                                    
-             "profileimage" => $storefile]             
-       );              
-       return redirect("profile")->with("success","profile has been updated");
-    } 
-    public function updateview(){
-       return view("updateprofile");
-    } 
+        $usertarget = User::find(Auth::user()->getKey());        
+        Storage::disk("public")->delete($usertarget["profileimage"]);
+        $storefile = $request->file("newimage")->store("proflleimage", "public");
+        $updateresult = $usertarget->update(
+            [
+                'name' => $newinput["newname"],
+                "profileimage" => $storefile
+            ]
+        );
+        return redirect("profile")->with("success", "profile has been updated");
+    }    
 
 }

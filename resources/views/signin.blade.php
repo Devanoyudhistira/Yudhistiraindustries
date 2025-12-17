@@ -4,7 +4,7 @@
     <div class="flex h-max w-screen flex-col items-center justify-center gap-4 bg-zinc-950">
 
         @if ($errors->hasAny(['email', 'name', 'password']))
-            <h1 class="font-bebas absolute text-3xl font-medium text-red-700"> please follow the instruction </h1>
+            <h1 class="font-bebas absolute text-3xl font-medium text-red-700"> {{ $errors->first() }} </h1>
         @endif
         <h1 class="font-orbit text-center text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>
         <form enctype="multipart/form-data" action="signin" method="POST"

@@ -13,8 +13,7 @@ class Companyblogcontroller extends Controller
         $searchresult = $request->input("search");
             if($searchresult != null){
                 $news->where('title','like','%' .$searchresult . '%');
-            };
-            // dump($news->find(1)->author);
+            };            
         return View("Companyblog",["datablogs" => $news->get(),"searchmode"=>$searchresult]) ;
     }
     public function singlenews(Request $request){ 
@@ -24,12 +23,14 @@ class Companyblogcontroller extends Controller
     }
     public function postblog(Request $request){
        $input = $request->input();
-       Companyblogmodel::create([
-        "title" => $input["title"],
-        "sender_id" => Auth::user()->getKey(),
-        "blog" => $input["blog"]
-       ]);
-       return redirect("/news")->with("success","lets fu gooo");
+        $thumbnail = $request->file("thumbnail")->store("thumbnail","public");
+        Companyblogmodel::create([
+         "title" => $input["title"],
+         "sender_id" => Auth::user()->getKey(),
+         "blog" => $input["blog"],
+         "thumbnail" => $thumbnail,
+        ]);       
+       return redirect("/news")->with("success","news created successfully");
     }
     public function deleteblog(Request $request){
        $input = $request->input();

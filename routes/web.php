@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\newsMaker;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,6 @@ Route::middleware(welcomemiddleware::class)->group(function () {
     Route::get('/', function (Request $request) {
         return view('Landing', ["login" => Auth::check()]);
     });
-
     Route::get('/sign', [usercontroller::class, "signinpage"]);
     Route::get('/login', [usercontroller::class, "loginpage"]);
 });
@@ -35,10 +35,9 @@ Route::controller(usercontroller::class)->group(function () {
 
 Route::controller(Companyblogcontroller::class)->group(function () {
     Route::get('/news', 'companyblog');
-    Route::get('/singlenews/{newsid}', 'singlenews');
-    Route::post('/companyblog/postblog', 'postblog');
-    Route::post('/postblog', 'postblog'); // if duplicate on purpose
-    Route::get('/makenews', 'makenews');
+    Route::get('/singlenews/{newsid}', 'singlenews');    
+    Route::post('/postblog', 'postblog');
+    Route::get('/makenews', 'makenews')->middleware(newsMaker::class);
 });
 
 Route::controller(products::class)->group(function () {

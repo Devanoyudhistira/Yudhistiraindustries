@@ -15,16 +15,26 @@ class products extends Controller
     {
         $namauser = Auth::user()->name;
         $islogin = Auth::check();
-        $allproduct = productsmodel::with('seller')->get();
+        $allproduct = productsmodel::with('seller')->get();        
         return view("products", ["name" => $namauser, "login" => $islogin, "products" => $allproduct]);
     }
     public function createproduct(Request $request)
     {  
         $request->validate([
-            "productname" => "min:8|required|max:20",
-            "productprice" => "required|min:1|numeric",
-            "productimage" => "required|image|max:10000"
-        ],["productname.min" => "character cannot less than 8","productprice.min" => "the price was too cheap","productimage.max" => "image size was to big"]);      
+            "productname" => "bail|min:8|required|max:20",
+            "productprice" => "bail|required|min:1|numeric",
+            "productimage" => "bail|required|image|max:10000"
+        ],[
+        "productname.min" => "product name cannot less than 8",
+        "productname.required" => "product name was missing",
+        "productname.max" => "product name cannot be more than 20",
+        "productprice.min" => "the price was too cheap",
+        "productprice.required" => "the price was missing",
+        "productprice.numeric" => "please enter with number",
+        "productimage.max" => "image size was to big",
+        "productimage.image" => "please enter a proper image (jpg,png)",
+        "productimage.required" => "image was missing"
+    ]);      
       $forminput = $request->input();  
       $productimage = $request->file("productimage")->store("productimage","public");
        $createresult = productsmodel::create([

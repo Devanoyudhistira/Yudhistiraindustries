@@ -4,12 +4,12 @@
     <main class="mt-10 flex flex-col" x-data="{ flashmassage: true, updateprofile: false }">
         @if (session('success'))
             <x-flash-massage :success="true">
-                {{ Str::limit(session('success'), 40) }}
+                {{ Str::limit(session('success'), 40) }} 
             </x-flash-massage>
         @endif
         @if ($errors->any())
             <x-flash-massage :success="false">
-                {{ $errors->first() }}
+                {{-- {{ $errors->first() }}  --}} product name cannot be more than 8
             </x-flash-massage>
         @endif
         <div
@@ -27,7 +27,7 @@
             </div>
             <article x-data="{ invoicedata: true, productform: false }" class="mt-2 flex w-full flex-col border-t-2 border-black bg-zinc-200 py-4">
                 <div id="category" class="-mt-[15px] flex">
-                    @if (Auth::user()->role === 'seller')
+                    @if (Auth::user()->role === 'seller' )
                         <button x-on:click="invoicedata = true"
                             class='border-t-3 font-bebas ml-6 w-min rounded-bl-2xl border-black px-3 py-2 text-4xl capitalize tracking-tighter shadow-[2px_2px_4px_black]'
                             :class="{
@@ -119,7 +119,7 @@
                                 <h1 class="font-bebas text-4xl font-bold tracking-widest">sell your product</h1>
                                 <i x-on:click="productform = false" class="bi bi-x text-6xl text-red-700"></i>
                             </div>
-                            <form   x-on:submit="buying = true" enctype="multipart/form-data" action="/product" method="post"
+                            <form x-on:submit="buying = true" enctype="multipart/form-data" action="/product" method="post"
                                 class="-mt-10 flex flex-col gap-2 p-3 py-6">
                                 @csrf
                                 <x-productinput autofocus type="text" name="productname" id="productname">
@@ -135,9 +135,9 @@
                                     class="h-95 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">
                                     <!-- placeholder -->
                                     <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
-                                        <i class="bi bi-images text-3xl text-zinc-800"></i>
-                                        <h1 class="font-bebas text-xl font-semibold">
-                                            update your image here
+                                        <i class="bi bi-images text-6xl text-zinc-800"></i>
+                                        <h1 class="font-bebas text-4xl font-semibold">
+                                            put your image here
                                         </h1>
                                     </div>                                    
                                     <input hidden accept="image/*" type="file" name="productimage" id="productimage"
@@ -176,11 +176,10 @@
                         <label x-data="{
                                     imgprev: null
                                 }" for="newimage"
-                                    class="h-95 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">
-                                    <!-- placeholder -->
+                                    class="h-95 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">                                    
                                     <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
-                                        <i class="bi bi-images text-3xl text-zinc-800"></i>
-                                        <h1 class="font-bebas text-xl font-semibold">
+                                        <i class="bi bi-images text-7xl text-zinc-800"></i>
+                                        <h1 class="font-bebas text-5xl font-semibold">
                                             update your image here
                                         </h1>
                                     </div>                                    
@@ -197,28 +196,5 @@
                 </div>
             </div>
     </main>
-    </div>
-    <script>
-        const allbutton = document.querySelectorAll(".deletebutton")
-        async allbutton.forEach(e => {
-            e.addEventListener('click', event => {
-                fetch("/deleteproduct", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            productId: e.dataset.id,
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log("Server response:", data);
-                    });
-            })
-        })
-        console.log(allbutton)
-    </script>
-
+    </div>    
 </x-layout>

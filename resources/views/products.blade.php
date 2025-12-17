@@ -10,20 +10,20 @@
             </x-flash-massage>
         @endif
         <h1 class="font-bebas text-4xl">Products</h1>
-        <article x-data="{ open: false, id: 3, name: '', price: '', seller: '', image: '' }" class="grid grid-cols-4 gap-2 pl-9">
+        <article x-data="{ open: false, id: 3, name: '', price: '', seller: '', image: '' ,description:''}" class="grid grid-cols-4 gap-2 pl-9">
             @foreach ($products as $product)
-                <div id="productCard" x-data="{ productname: '{{ $product['productname'] }}', productid: '{{ $product['id'] }}', productprice: '${{ $product['price'] }}', productseller: '{{ $product->seller->name }}', productimage: '{{ $product['image'] }}' }"
+                <div id="productCard" x-data="{ productname: '{{ $product['productname'] }}', productid: '{{ $product['id'] }}', productprice: '${{ $product['price'] }}',productdesc:'{{ $product['description'] }}', productseller: '{{ $product->seller->name }}', productimage: '{{ $product['image'] }}' }"
                     class="w-54 h-75 flex flex-col items-center border-2 border-zinc-100 bg-zinc-900">
                     <img src={{ asset('storage/' . $product['image']) }}
                         class="mt-5 h-[40%] w-[90%] object-cover object-center"></img>
                     <div
-                        class="font-bebas flex w-[90%] justify-between text-2xl font-medium tracking-wider text-zinc-100">
-                        <h3>{{ $product['productname'] }}</h3>
-                        <h3> <i class="bi bi-star text-2xl text-yellow-600"></i> 5.0 </h3>
+                        class="font-bebas flex flex-col w-[90%] justify-between text-2xl font-medium tracking-wider text-zinc-100">
+                        <h3>{{Str::limit($product['productname'],15)  }}</h3>                        
+                         <h6 class="text-xl -mt-2 text-zinc-700" > <a href="userprofile/{{ $product->seller["user_id"] }}" > {{ $product->seller->name }} </a></h6>
                     </div>
                     <button
-                        x-on:click="name = productname;price = productprice;open = true;seller = productseller,id = productid;image=productimage "
-                        class="font-bebas mt-20 flex h-10 w-[90%] items-center justify-center rounded-xl bg-zinc-200 px-1 py-3 text-2xl font-medium tracking-wider text-zinc-950">
+                        x-on:click="name = productname;description = productdesc;price = productprice;open = true;seller = productseller,id = productid;image=productimage "
+                        class="font-bebas mt-12 flex h-10 w-[90%] items-center justify-center rounded-xl bg-zinc-200 px-1 py-3 text-2xl font-medium tracking-wider text-zinc-950">
                         <i class="bi bi-cart"></i> ${{ $product['price'] }} </button>
                 </div>
             @endforeach
@@ -57,10 +57,7 @@
                             </x-product-attr>
                             <div class="w-full px-4">
                                 <h1 class="font-bebas text-2xl font-semibold">Description</h1>
-                                <p class="font-bebas text-xl">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ut, excepturi
-                                    quia voluptatum minus odit ab similique totam at, molestiae fuga sunt, facere
-                                    voluptate non expedita repudiandae accusantium itaque? Officia?
+                                <p class="font-bebas text-xl" x-text="description">                                    
                                 </p>
                             </div>
                         </div>

@@ -36,10 +36,12 @@
                 </article>
             @endforeach            
         </div>        
-        <div class="absolute right-10 bottom-10 w-max h-max px-1 py-1 rounded-full border-4 border-green-500 shadow-[4px_4px_0_black]" > 
-           <a href="/makenews"> <button x-on:click="blogform = !blogform" > 
+        @if ( Auth::user()->role === 'staff')
+        <div class="absolute right-10 bottom-10 w-max h-max px-1 py-1 rounded-full border-4 border-zinc-900 shadow-[4px_4px_0_black]" > 
+            <a href="/makenews"> <button x-on:click="blogform = !blogform" > 
                 <i class="bi bi-plus text-6xl" ></i>
-             </button> </a>
+            </button> </a>
         </div>
+        @endif
     </main>
 </x-layout>

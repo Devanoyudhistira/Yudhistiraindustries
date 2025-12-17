@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('Blogger', function (Blueprint $table) {
             $table->id();
             $table->string("title",30);
-            $table->string("thumbnail",30)->default("");
+            $table->text("thumbnail",)->nullable();
             $table->text("blog");
             $table->foreignId('sender_id')
       ->constrained(table: 'users', column: 'user_id')
