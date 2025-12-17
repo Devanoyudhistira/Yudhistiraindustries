@@ -43,9 +43,6 @@ Route::controller(Companyblogcontroller::class)->group(function () {
 Route::controller(products::class)->group(function () {
     Route::post('/deleteproduct', 'delete');
     Route::post('/product', 'createproduct');
-    Route::post('/purchase', 'buyingproduct');
-
-    Route::middleware(productsmiddleware::class)->group(function () {
-        Route::get('/products', 'product');
-    });
+    Route::post('/purchase', 'buyingproduct');    
+    Route::get('/products', 'product');    
 });

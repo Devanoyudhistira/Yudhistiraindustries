@@ -37,7 +37,7 @@ class usercontroller extends Controller
                 "profileimage" => "image|max:10240"
             ],
             [
-                "email.unique" => "the email is already exist",
+                "email.unique" => "the user is already exist",
                 "email.required" => "the email is missing",
                 "name.required" => "the username is missing",
                 "name.min" => "the username must more than 8",
@@ -53,10 +53,10 @@ class usercontroller extends Controller
         $name = $request->input("name");
         $image = $request->file("profileimage");
         if($image){
-            $image->store("proflleimage", "public");
+           $image = $request->file("profileimage")->store("proflleimage", "public");
         }
         else {
-            $image = "profileimage/profile.jpeg";
+            $image = null;
         }
         $password = $request->input("password");
         $createuser = User::create([
@@ -148,7 +148,8 @@ class usercontroller extends Controller
             ]
         );
         $usertarget = User::find(Auth::user()->getKey());        
-        Storage::disk("public")->delete($usertarget["profileimage"]);
+        $previusimage = $usertarget["profileimage"] ?? "" ;
+        Storage::disk("public")->delete($previusimage);
         $storefile = $request->file("newimage")->store("proflleimage", "public");
         $updateresult = $usertarget->update(
             [

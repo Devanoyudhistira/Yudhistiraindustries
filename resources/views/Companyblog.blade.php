@@ -21,7 +21,7 @@
             @foreach ($datablogs as $blog)
                 <article
                     class="w-90 h-69 mt-3 pb-4 flex flex-col overflow-hidden rounded-xl rounded-t-2xl border-x-2 border-b-2 border-t-8 border-black border-x-zinc-100 border-t-zinc-800 shadow-[8px_8px_0px_black]">
-                    <img src="{{ asset('image/image2.jpg') }}" class="h-[50%] w-full object-cover object-center"
+                    <img src="{{ asset("storage/" . $blog["thumbnail"]) }}" class="h-[50%] w-full object-cover object-center"
                         alt="thumbnail">
                     <div class="flex w-full justify-between px-3">
                         <div>
@@ -36,7 +36,7 @@
                 </article>
             @endforeach            
         </div>        
-        @if ( Auth::user()->role === 'staff')
+        @if (Auth::check() && Auth::user()->role === 'staff')
         <div class="absolute right-10 bottom-10 w-max h-max px-1 py-1 rounded-full border-4 border-zinc-900 shadow-[4px_4px_0_black]" > 
             <a href="/makenews"> <button x-on:click="blogform = !blogform" > 
                 <i class="bi bi-plus text-6xl" ></i>

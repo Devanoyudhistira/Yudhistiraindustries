@@ -13,7 +13,8 @@ class products extends Controller
 {
     public function product()
     {
-        $namauser = Auth::user()->name;
+        $login =Auth::check();
+        $namauser = !$login ?  "" : Auth::user()->name;
         $islogin = Auth::check();
         $allproduct = productsmodel::with('seller')->get();        
         return view("products", ["name" => $namauser, "login" => $islogin, "products" => $allproduct]);
@@ -62,11 +63,10 @@ class products extends Controller
 
     public function buyingproduct(Request $request)
     {
-       $productid = $request->input("productId");
-       $buyerid = $request->input("userid");
+       $productid = $request->input("productId");       
         invoicemodel::create([
             "product_id" => $productid,
-            "buyer_id" => $buyerid,
+            "buyer_id" => Auth::user()->getkey(),
         ]);
         return back()->with("success","purchase success");
     }

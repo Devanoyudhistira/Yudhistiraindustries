@@ -3,8 +3,8 @@
 
     <div class="flex h-max w-screen flex-col items-center justify-center gap-4 bg-zinc-950">
 
-        @if ($errors->hasAny(['email', 'name', 'password']))
-            <h1 class="font-bebas absolute text-3xl font-medium text-red-700"> {{ $errors->first() }} </h1>
+        @if ($errors->hasAny(['email', 'name', 'password','profileimage']))
+            <h1 class="font-bebas top-23 absolute text-3xl font-medium text-red-700"> {{ $errors->first() }} </h1>
         @endif
         <h1 class="font-orbit text-center text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>
         <form enctype="multipart/form-data" action="signin" method="POST"
@@ -41,7 +41,7 @@
                 <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
                     <i class="bi bi-images text-3xl text-zinc-800"></i>
                     <h1 class="font-bebas text-xl font-semibold">
-                        update your image here
+                        put your profile image here (10mb)
                     </h1>
                 </div>
                 <input hidden accept="image/*" type="file" name="profileimage" id="profileimage"

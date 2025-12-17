@@ -16,7 +16,7 @@
             class="ml-2 mt-1 flex w-[98vw] flex-col rounded-xl border-2 border-black bg-zinc-200 px-3 py-3 shadow-[3px_3px_5px_black]">
             <div class="flex items-center justify-between gap-6">
                 <div class="relative flex items-center gap-6">
-                    <img src="{{ asset('storage/' . $datauser['profileimage']) }}"
+                    <img  src="{{ asset('storage/' . ($datauser['profileimage'] ?? 'proflleimage/profile.jpeg')) }}"
                         class="border-3 h-60 w-60 rounded-full border-black object-cover" alt="profile" srcset="">
                     <h1 class="font-bebas text-5xl font-semibold tracking-widest"> {{ $datauser->name }} </h1>
                     <button x-on:click="updateprofile = true"
