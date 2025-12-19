@@ -9,11 +9,12 @@ use App\Http\Controllers\usercontroller;
 use App\Http\Controllers\products;
 use App\Http\Middleware\welcomemiddleware;
 use App\Http\Middleware\loginpage;
+use App\Http\Middleware\userprofile;
 use App\Http\Middleware\productsmiddleware;
 
 
 Route::middleware(welcomemiddleware::class)->group(function () {
-    Route::get('/', function (Request $request) {
+    Route::get('/', function (Request $request) {        
         return view('Landing', ["login" => Auth::check()]);
     });
     Route::get('/sign', [usercontroller::class, "signinpage"]);
@@ -21,7 +22,7 @@ Route::middleware(welcomemiddleware::class)->group(function () {
 });
 
 Route::controller(usercontroller::class)->group(function () {
-    Route::get('/userprofile/{id}', 'userprofile');
+    Route::get('/userprofile/{id}', 'userprofile')->middleware(userprofile::class);
     Route::get('/logout', 'logout');
     Route::post('/signin', 'SignIn');
     Route::post('/loginpage', 'login');

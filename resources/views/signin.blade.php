@@ -4,11 +4,11 @@
     <div class="flex h-max w-screen flex-col items-center justify-center gap-4 bg-zinc-950">
 
         @if ($errors->hasAny(['email', 'name', 'password','profileimage']))
-            <h1 class="font-bebas top-23 absolute text-3xl font-medium text-red-700"> {{ $errors->first() }} </h1>
+            <h1 class="font-bebas top-19 lg:top-23 absolute text-2xl lg:text-3xl font-medium text-red-700"> {{ $errors->first() }} </h1>
         @endif
-        <h1 class="font-orbit text-center text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>
+        <h1 class="font-orbit text-center text-2xl lg:text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>
         <form enctype="multipart/form-data" action="signin" method="POST"
-            class="w-160 h-max py-3 border-3 font-orbit gap-y-6.5 grid grid-cols-1 place-content-center place-items-center rounded-2xl border-zinc-300 px-3 text-center text-xl font-medium text-zinc-200">
+            class="w-160 h-max py-3 border-3 -mt-2 lg:mt-0 font-orbit gap-y-6.5 grid grid-cols-1 place-content-center place-items-center rounded-2xl border-zinc-300 px-3 text-center text-xl font-medium text-zinc-200">
             @csrf
             <h1 class="font-orbit -ml-2 text-2xl font-bold tracking-wider text-white"> Join Us </h1>
             <label x-data="{ email: '' }" for="email" class="ml-15 h-10">
@@ -36,7 +36,7 @@
             <label x-data="{
                 imgprev: null
             }" for="profileimage"
-                class="h-55 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">
+                class="h-55 border-3 relative grid w-[50%] lg:w-full cursor-pointer place-items-center border-dashed">
                 <!-- placeholder -->
                 <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
                     <i class="bi bi-images text-3xl text-zinc-800"></i>
@@ -50,7 +50,7 @@
                     class="absolute inset-0 h-full w-full object-cover object-center" alt="preview">
             </label>
             <button
-                class="font-bebas border-3 inline-block rounded-xl border-zinc-200 px-4 py-1.5 text-3xl tracking-wider text-white duration-200 hover:bg-zinc-200 hover:text-zinc-900"
+                class="font-bebas border-3 lg:mt-0 -mt-5 inline-block rounded-xl border-zinc-200 px-4 py-1.5 text-3xl tracking-wider text-white duration-200 hover:bg-zinc-200 hover:text-zinc-900"
                 type="submit">
                 Sign In
             </button>

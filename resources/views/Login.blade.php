@@ -4,9 +4,9 @@
         @if ($errors->hasAny(['email', 'name', 'password']))
             <h1 class="font-bebas text-3xl font-medium text-red-700"> password or username wrong </h1>
         @endif
-        <h1 class="font-orbit text-center text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>
+        <h1 class="font-orbit text-center text-2xl lg:text-4xl font-bold tracking-tight text-white">YudhistiraIndustries</h1>
         <form action="/loginpage" method="POST" action="signin" method="POST"
-            class="w-160 h-100 border-3 font-orbit grid grid-cols-1 place-content-center place-items-center gap-y-8 rounded-2xl border-zinc-300 px-3 py-1 text-center text-xl font-medium text-zinc-200">
+            class="lg:w-160 w-120 h-100 border-3 font-orbit grid grid-cols-1 place-content-center place-items-center gap-y-8 rounded-2xl border-zinc-300 px-3 py-1 text-center text-xl font-medium text-zinc-200">
             @csrf
             <h1 class="font-orbit -ml-2 text-2xl font-bold tracking-wider text-white"> welcome back </h1>
             <label x-data="{ name: '' }" for="name" autocorrect="off" class="relative h-10 gap-3">

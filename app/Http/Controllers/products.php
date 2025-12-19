@@ -36,13 +36,14 @@ class products extends Controller
         "productimage.image" => "please enter a proper image (jpg,png)",
         "productimage.required" => "image was missing"
     ]);      
-      $forminput = $request->input();  
+      $forminput = $request->input();
+      $description = $forminput["description"] ?? $forminput["description_pc"];
       $productimage = $request->file("productimage")->store("productimage","public");
        $createresult = productsmodel::create([
             "price" => (float)$forminput["productprice"],
             "productname" => $forminput["productname"],
             "seller_id" => Auth::user()->getkey(),
-            "description" => $forminput["description"],    
+            "description" => $description,    
             "image"        => $productimage
         ]);        
         if($createresult){

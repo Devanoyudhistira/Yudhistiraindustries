@@ -9,7 +9,7 @@
                 {{ Str::limit(session('success'), 40) }}
             </x-flash-massage>
         @endif
-        <h1 class="font-bebas text-4xl">Products</h1>
+        <h1 class="font-bebas ml-3 text-4xl">Products</h1>
         <article x-data="{ open: false, id: 0, name: '', price: '', seller: '', image: '', description: '', sellerid: '' }" class="grid grid-cols-4 gap-2 pl-9">
             @foreach ($products as $product)
                 <div id="productCard" x-data="{ productname: '{{ $product['productname'] }}', productid: '{{ $product['id'] }}', productprice: '${{ $product['price'] }}', productdesc: '{{ $product['description'] }}', productseller: '{{ $product->seller->name }}', productimage: '{{ $product['image'] }}', productsellerid: '{{ $product->seller['user_id'] }}' }"
@@ -30,59 +30,65 @@
                 </div>
             @endforeach
             <div x-transition x-show="open" x-data="{ buying: false }"
-                class="z-2000 absolute left-0 top-0 flex h-screen w-screen flex-col bg-zinc-200 px-3">
+                class="z-2000 absolute left-0 top-0 flex h-max w-screen flex-col justify-center bg-zinc-200 px-3">
                 <button class="items-self-start absolute -top-5 left-10 self-start justify-self-start text-[80px]"
                     x-on:click="open = false"> <i class="bi bi-x font-black text-red-600"></i> </button>
-                <div class="mt-18 h-130 flex w-full">
-                    <img :src="'{{ asset('storage') }}/' + image" id="productimage"
-                        class="h-[70%] w-[70%] object-cover"></img>
-                    <div class="flex h-[70%] w-full flex-col border-l-2 border-black bg-zinc-100">
-                        <h1 class="font-bebas ml-4 text-4xl font-medium" x-text="name"> </h1>
-                        <div class="flex w-full flex-col gap-2">
-                            <x-product-attr>
-                                <h4>name:</h4>
-                                <h4 x-text="name"></h4>
-                            </x-product-attr>
-                            <x-product-attr>
-                                <h4>price:</h4>
-                                <h4 x-text="price"></h4>
-                            </x-product-attr>
-                            <x-product-attr>
-                                <h4>seller:</h4>
-                                <a :href="'userprofile/' + sellerid">
-                                    <h4 x-text="seller"> </h4>
-                                </a>
-                            </x-product-attr>
-                            <x-product-attr>
-                                <h4>arrival:</h4>
-                                <h4>12-20-2027</h4>
-                            </x-product-attr>
-                            <div class="w-full px-4">
-                                <h1 class="font-bebas text-2xl font-semibold">Description</h1>
-                                <p class="font-bebas text-xl" x-text="description">
-                                </p>
+                <div class="flex flex-col gap-3 lg:gap-6 ">
+                    <div class="mt-18 h-130 flex w-full flex-col px-2 lg:flex-row">
+                        <img :src="'{{ asset('storage') }}/' + image" id="productimage"
+                            class="h-full w-full object-cover lg:h-[70%] lg:w-[70%]"></img>
+                        <div
+                            class="flex h-[70%] w-full flex-col border-l-2 border-t-2 border-black bg-zinc-100 lg:border-t-0">
+                            <h1 class="font-bebas ml-4 text-4xl font-medium" x-text="name"> </h1>
+                            <div class="flex w-full flex-col gap-2">
+                                <x-product-attr>
+                                    <h4>name:</h4>
+                                    <h4 x-text="name"></h4>
+                                </x-product-attr>
+                                <x-product-attr>
+                                    <h4>price:</h4>
+                                    <h4 x-text="price"></h4>
+                                </x-product-attr>
+                                <x-product-attr>
+                                    <h4>seller:</h4>
+                                    <a :href="'userprofile/' + sellerid">
+                                        <h4 x-text="seller"> </h4>
+                                    </a>
+                                </x-product-attr>
+                                <x-product-attr>
+                                    <h4>arrival:</h4>
+                                    <h4>12-20-2027</h4>
+                                </x-product-attr>
+                                <div class="w-full px-4">
+                                    <h1 class="font-bebas text-2xl font-semibold">Description</h1>
+                                    <p class="font-bebas text-xl" x-text="description">
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                @if (Auth::check())
-                    <form method="POST" x-on:submit="buying = true" x-data="button" action="/purchase">
-                        @csrf
-                        <input hidden :value="id" name="productId">
-                        <button type="submit" :disabled="buying"
-                            class="items-self-center font-bebas text-xinc-200 align-center ml-60 w-[60%] justify-self-center rounded-xl border-2 text-center text-2xl font-semibold tracking-wider text-zinc-100 duration-100"
-                            :class="{
-                                'bg-zinc-200 text-zinc-950': buying,
-                                'bg-zinc-900 hover:text-zinc-900 hover:border-black hover:bg-zinc-200': !buying
-                            }">
-                            <i class="bi bi-cart"></i> <span x-text="buying ? 'loading' : 'purchase' "></span> </button>
+                    @if (Auth::check())
+                        <form method="POST" x-on:submit="buying = true" x-data="button" action="/purchase"
+                            class="md:mt-70 mb-10 mt-16 flex w-full justify-center lg:mb-0 lg:mt-0">
+                            @csrf
+                            <input hidden :value="id" name="productId">
+                            <button type="submit" :disabled="buying"
+                                class="items-self-center font-bebas text-xinc-200 align-center w-[60%] justify-self-center rounded-xl border-2 text-center text-2xl font-semibold tracking-wider text-zinc-100 duration-100"
+                                :class="{
+                                    'bg-zinc-200 text-zinc-950': buying,
+                                    'bg-zinc-900 hover:text-zinc-900 hover:border-black hover:bg-zinc-200': !buying
+                                }">
+                                <i class="bi bi-cart"></i> <span x-text="buying ? 'loading' : 'purchase' "></span>
+                            </button>
+                        @else
+                            <a href="/sign"
+                                class="items-self-center font-bebas align-center ml-60 w-[60%] justify-self-center rounded-xl border-2 bg-sky-600 text-center text-2xl font-semibold tracking-wider text-zinc-950 duration-100">
+                                You need to login first
+                            </a>
+                    @endif
                     </form>
-                @else
-                    <a href="/sign"
-                        class="items-self-center font-bebas align-center ml-60 w-[60%] justify-self-center rounded-xl border-2 bg-sky-600 text-center text-2xl font-semibold tracking-wider text-zinc-950 duration-100">
-                        You need to login first
-                    </a>
-                @endif
+                </div>
+
             </div>
         </article>
     </main>

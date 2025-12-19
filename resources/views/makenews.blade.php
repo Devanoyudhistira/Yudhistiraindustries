@@ -12,7 +12,7 @@
             <label x-data="{
                 imgprev: null
             }" for="thumbnail"
-                class="h-125 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">                
+                class="lg:h-125 h-80 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">                
                 <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
                     <i class="bi bi-images text-6xl text-zinc-800"></i>
                     <h1 class="font-bebas text-4xl font-semibold">

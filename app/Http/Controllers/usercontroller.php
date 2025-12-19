@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class usercontroller extends Controller
     }
     public function SignIn(Request $request)
     {
+        dd(config('cloudinary.cloud_url'));
         $request->validate
         (
             [
@@ -50,14 +52,18 @@ class usercontroller extends Controller
             ]
         );
         $email = $request->input("email");
-        $name = $request->input("name");
+        $name = $request->input("name");        
+        if($request->hasFile('profileimage')){
         $image = $request->file("profileimage");
-        if($image){
-           $image = $request->file("profileimage")->store("proflleimage", "public");
+           $imageresult = Cloudinary::uploadfile(
+    $image->getRealPath(),
+    ['folder' => 'profileimage']
+)->getSecureUrl();
         }
         else {
             $image = null;
-        }
+        } 
+        dd($imageresult);
         $password = $request->input("password");
         $createuser = User::create([
             'name' => $name,
@@ -70,8 +76,7 @@ class usercontroller extends Controller
             Auth::login($createuser);
             $request->session()->regenerate();
             return redirect("/profile");
-        }
-        ;
+        };
         return back()->withErrors(["password" => "opeartionfail"]);
     }
     public function login(Request $request)
@@ -99,7 +104,7 @@ class usercontroller extends Controller
         $products = $invoices->pluck('product.productname');
         $productprices = $invoices->pluck('product.price');
         $productimage = $invoices->pluck('product.image');
-        $productdate = $invoices->pluck('product.created_at');        
+        $productdate = $invoices->all();
         return view("userprofile", [
             "datauser" => $user,
             "purchased" => $invoices,
