@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>news</x-slot:title>
     <x-navbar>news</x-navbar>
-    <main class="relative mt-10 flex h-max w-screen flex-col gap-1">
+    <main class="relative mt-10 px-4 flex h-max w-screen flex-col gap-1">
         <div class="flex h-max w-full items-center justify-between">
             <div class="flex w-full flex-col ">
                 <div class="flex w-full justify-between items-center">
@@ -17,9 +17,8 @@
             </div>
         </div>
         </div>
-
-        <img src="{{ asset("storage/" . $news["thumbnail"]) }}" class="h-120 w-screen object-cover object-center" alt="">
-        <article class="mt-3 h-max px-3">
+        <img src="{{ asset(($news['thumbnail'])) }}" class="h-120 self-center w-[90%] object-cover object-center" alt="">
+        <article class="mt-3 h-max -ml-10 px-10 w-[90%]">
             <p class="font-zolando text-left text-xl font-medium text-zinc-900">{{ $news['blog'] }}</p>
         </article>
 

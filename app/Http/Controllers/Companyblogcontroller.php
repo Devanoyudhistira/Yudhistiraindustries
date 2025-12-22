@@ -21,14 +21,15 @@ class Companyblogcontroller extends Controller
         $news = Companyblogmodel::find($url);                       
         return View("news",["news" => $news]);
     }
-    public function postblog(Request $request){
+    public function postblog(Request $request,httpUploader $httpUploader){
        $input = $request->input();
-        $thumbnail = $request->file("thumbnail")->store("thumbnail","public");
+        $thumbnail = $request->file("thumbnail");
+        $image = $httpUploader->uploadfile($thumbnail,"thumbnail/");
         Companyblogmodel::create([
          "title" => $input["title"],
          "sender_id" => Auth::user()->getKey(),
          "blog" => $input["blog"],
-         "thumbnail" => $thumbnail,
+         "thumbnail" => $image,
         ]);       
        return redirect("/news")->with("success","news created successfully");
     }

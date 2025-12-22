@@ -4,7 +4,7 @@
     <main class="mt-10 flex flex-col" x-data="{ flashmassage: true, updateprofile: false }">
         @if (session('success'))
             <x-flash-massage :success="true">
-                {{ Str::limit(session('success'), 40) }}
+                {{ session('success') }}
             </x-flash-massage>
         @endif
         @if ($errors->any())
@@ -15,8 +15,8 @@
         <div
             class="ml-2 mt-1 flex w-[98vw] flex-col rounded-xl border-2 border-black bg-zinc-200 px-3 py-3 shadow-[3px_3px_5px_black]">
             <div class="flex items-center justify-between gap-6">
-                <div class="relative flex items-center gap-6">
-                    <img  src="{{ asset('storage/' . ($datauser['profileimage'] ?? 'proflleimage/profile.jpeg')) }}"
+                <div class="relative flex items-center gap-6 flex-col lg:flex-row" >
+                    <img  src="{{ asset(($datauser['profileimage'] ?? 'storage/proflleimage/profile.jpeg')) }}"                    
                         class="border-3 h-60 w-60 rounded-full border-black object-cover" alt="profile" srcset="">
                     <h1 class="font-bebas text-5xl font-semibold tracking-widest"> {{ $datauser->name }} </h1>                    
                 </div>
@@ -41,11 +41,11 @@
                     @endif
                 </div>
                 <div id="itemcontainer" class="w-full">
-                    <div class="grid grid-cols-4" x-show="invoicedata" x-transition>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4" x-show="invoicedata" x-show="invoicedata" x-transition>
                         @if (count($products) <= 0)
                             <x-productform>
                                 <x-slot:text1>
-                                    <h1 class="font-bebas text-6xl font-bold"> there is no purchased</h1>
+                                    <h1 class="font-bebas text-3xl md:text-4xl lg:text-6xl font-bold" > there is no purchased</h1>
                                 </x-slot:text1>
                                 <x-slot:text2>
                                     <p></p>
@@ -54,21 +54,21 @@
                         @else
                             @for ($i = 0; $i < count($products); $i++)
                                 <div
-                                    class="w-70 h-65 mt-4 flex flex-col gap-2 rounded-[10px] border border-black bg-zinc-100 px-2 py-3">
-                                    <img src="{{ asset('storage/' . $productimage[$i]) }}"
+                                    class="w-50 md:w-65 lg:w-70 h-60 lg:h-65 mt-4 flex flex-col gap-2 rounded-[10px] border border-black bg-zinc-100 px-2 py-3">
+                                    <img src="{{ asset($productimage[$i]) }}"
                                         class="border-3 ml-4 h-[55%] w-[90%] rounded-[10px] object-cover" alt="profile"
                                         srcset="">
-                                    <h1 class="font-bebas text-2xl font-semibold tracking-widest"> {{ $products[$i] }}
-                                        <h1 class="font-bebas text-2xl font-semibold tracking-widest">
+                                   <h1 class="font-bebas  text-xl lg:text-2xl font-semibold tracking-widest"> {{ $products[$i] }}
+                                        <h1 class="font-bebas  text-xl lg:text-2xl font-semibold tracking-widest">
                                             ${{ $productprice[$i] }} <h1>
-                                                <h1 class="font-bebas -mt-6 text-2xl font-semibold tracking-widest">
+                                                <h1 class="font-bebas -mt-6  text-xl lg:text-2xl font-semibold tracking-widest">
                                                     {{ $purchasedate[$i]['created_at']->diffForHumans() }} <h1>
 
                                 </div>
                             @endfor
                         @endif
                     </div>
-                    <div class="grid grid-cols-4" x-show="!invoicedata" x-transition>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4" x-show="!invoicedata" x-transition>
                         @if (count($seller) <= 0)
                             <x-productform>
                                 <x-slot:text1>
@@ -85,8 +85,8 @@
                             </div>
                             @foreach ($seller as $sell)
                                 <div x-show="!invoicedata" x-transition
-                                    class="w-70 h-65 mt-4 flex flex-col items-center gap-2 rounded-[10px] border border-black bg-zinc-100 px-2 py-3">
-                                    <img src="{{ asset('storage/' . $sell['image']) }}"
+                                    class="w-50 lg:w-70 h-60 lg:h-65 mt-4 flex flex-col items-center gap-2 rounded-[10px] border border-black bg-zinc-100 px-2 py-3">
+                                    <img src="{{ asset($sell['image']) }}"
                                         class="border-3 h-[55%] w-[90%] rounded-[10px] object-cover" alt="profile"
                                         srcset="">
 

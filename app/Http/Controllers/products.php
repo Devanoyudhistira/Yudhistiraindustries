@@ -19,7 +19,7 @@ class products extends Controller
         $allproduct = productsmodel::with('seller')->get();        
         return view("products", ["name" => $namauser, "login" => $islogin, "products" => $allproduct]);
     }
-    public function createproduct(Request $request)
+    public function createproduct(Request $request,httpUploader $httpUploader)
     {  
         $request->validate([
             "productname" => "bail|min:8|required|max:20",
@@ -38,13 +38,14 @@ class products extends Controller
     ]);      
       $forminput = $request->input();
       $description = $forminput["description"] ?? $forminput["description_pc"];
-      $productimage = $request->file("productimage")->store("productimage","public");
+      $productimage = $request->file("productimage");
+      $image = $httpUploader->uploadfile($productimage,"productimage/");
        $createresult = productsmodel::create([
             "price" => (float)$forminput["productprice"],
             "productname" => $forminput["productname"],
             "seller_id" => Auth::user()->getkey(),
             "description" => $description,    
-            "image"        => $productimage
+            "image"        => $image
         ]);        
         if($createresult){
             return back()->with("success",$forminput["productname"] . " created succesfully");        

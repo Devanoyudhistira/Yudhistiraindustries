@@ -14,7 +14,7 @@
             @foreach ($products as $product)
                 <div id="productCard" x-data="{ productname: '{{ $product['productname'] }}', productid: '{{ $product['id'] }}', productprice: '${{ $product['price'] }}', productdesc: '{{ $product['description'] }}', productseller: '{{ $product->seller->name }}', productimage: '{{ $product['image'] }}', productsellerid: '{{ $product->seller['user_id'] }}' }"
                     class="w-54 h-75 flex flex-col items-center border-2 border-zinc-100 bg-zinc-900">
-                    <img src={{ asset('storage/' . $product['image']) }}
+                    <img src="{{ asset(($product['image'])) }}"
                         class="mt-5 h-[40%] w-[90%] object-cover object-center"></img>
                     <div
                         class="font-bebas flex w-[90%] flex-col justify-between text-2xl font-medium tracking-wider text-zinc-100">
@@ -35,7 +35,7 @@
                     x-on:click="open = false"> <i class="bi bi-x font-black text-red-600"></i> </button>
                 <div class="flex flex-col gap-3 lg:gap-6 ">
                     <div class="mt-18 h-130 flex w-full flex-col px-2 lg:flex-row">
-                        <img :src="'{{ asset('storage') }}/' + image" id="productimage"
+                        <img :src="image" id="productimage"
                             class="h-full w-full object-cover lg:h-[70%] lg:w-[70%]"></img>
                         <div
                             class="flex h-[70%] w-full flex-col border-l-2 border-t-2 border-black bg-zinc-100 lg:border-t-0">

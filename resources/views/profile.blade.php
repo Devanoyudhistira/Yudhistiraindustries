@@ -15,8 +15,8 @@
         <div
             class="ml-2 mt-1 flex w-[98vw] flex-col rounded-xl border-2 border-black bg-zinc-200 px-3 py-3 shadow-[3px_3px_5px_black]">
             <div class="flex items-center justify-between gap-6">
-                <div class="relative flex items-center gap-6 flex-col lg:flex-row">
-                    <img  src="{{ asset('storage/' . ($datauser['profileimage'] ?? 'proflleimage/profile.jpeg')) }}"
+                <div class="relative flex items-center gap-6 flex-col lg:flex-row" >
+                    <img src="{{ asset(($datauser['profileimage'] ?? 'storage/proflleimage/profile.jpeg')) }}"                    
                         class="border-3 h-60 w-60 rounded-full border-black object-cover" alt="profile" srcset="">
                     <h1 class="font-bebas text-5xl font-semibold tracking-widest"> {{ $datauser->name }} </h1>
                     <button x-on:click="updateprofile = true"
@@ -59,7 +59,7 @@
                             @for ($i = 0; $i < count($products); $i++)
                                 <div
                                     class="w-50 md:w-65 lg:w-70 h-60 lg:h-65 mt-4 flex flex-col gap-2 rounded-[10px] border border-black bg-zinc-100 px-2 py-3">
-                                    <img src="{{ asset('storage/' . $productimage[$i]) }}"
+                                    <img src="{{ asset( $productimage[$i]) }}"
                                         class="border-3 ml-2 lg:ml-4 h-[55%] w-[90%] rounded-[10px] object-cover" alt="profile"
                                         srcset="">
                                     <h1 class="font-bebas  text-xl lg:text-2xl font-semibold tracking-widest"> {{ $products[$i] }}
@@ -92,7 +92,7 @@
                             @foreach ($seller as $sell)
                                 <div x-show="!invoicedata" x-transition
                                     class="w-50 lg:w-70 h-60 lg:h-65 mt-4 flex flex-col items-center gap-2 rounded-[10px] border border-black bg-zinc-100 px-2 py-3">
-                                    <img src="{{ asset('storage/' . $sell['image']) }}"
+                                    <img src="{{ asset($sell['image']) }}"
                                         class="border-3 h-[55%] w-[90%] rounded-[10px] object-cover" alt="profile"
                                         srcset="">
                                     <h1 class="font-bebas text-2xl font-semibold tracking-widest">
@@ -163,44 +163,7 @@
                             </form>
                         </div>
                     </div>
-            </article>
-            {{-- <div x-data="{ buying: false }" x-show="updateprofile" x-transition
-                class="absolute left-[0%] top-[5%] flex h-screen w-screen items-center justify-center bg-zinc-950/30">
-                <div class="h-max w-[65vw] border-4 border-black bg-zinc-200 px-2 py-5">
-                    <div class="flex w-full justify-between">
-                        <h1 class="font-bebas text-4xl font-bold tracking-widest">edit profile</h1>
-                        <i x-on:click="updateprofile = false" class="bi bi-x text-6xl text-red-700"></i>
-                    </div>
-                    <form x-on:submit="buying = true"   enctype="multipart/form-data" action="/updateprofile"
-                        method="post" class="-mt-5 flex flex-col gap-2 p-3 py-6">
-                        @csrf
-                        <label for="new name" class="flex flex-col">
-                            <h1 class="font-sans text-2xl tracking-wider"> update name: </h1>
-                            <input name="newname" id="newname"
-                                class="font-zalando focus:none border-3 inline-block border-black"></input>
-                        </label>
-                        <label x-data="{
-                                    imgprev: null
-                                }" for="newimage"
-                                    class="h-95 border-3 relative grid w-full cursor-pointer place-items-center border-dashed">                                    
-                                    <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
-                                        <i class="bi bi-images text-7xl text-zinc-800"></i>
-                                        <h1 class="font-bebas text-5xl font-semibold">
-                                            update your image here
-                                        </h1>
-                                    </div>                                    
-                                    <input hidden accept="image/*" type="file" name="newimage" id="newimage"
-                                        @change=" const file = $event.target.files[0];
-                                            if (file) {
-                                                imgprev = URL.createObjectURL(file);
-                                            }">                                  
-                                    <img x-show="imgprev" :src="imgprev"
-                                        class="absolute inset-0 h-full w-full object-cover object-center" alt="preview">
-                                </label>
-                        <button type="submit" :disabled="buying" class="font-bebas w-52 self-center justify-self-center border-4 border-black bg-zinc-200 px-2 py-2.5 text-3xl shadow-[3px_3px_0_black] transition hover:scale-[86%] hover:shadow-[6px_6px_0_black]"><span x-text="buying ? 'loading...' : 'update' " ></span></button>
-                    </form>
-                </div>
-            </div> --}}
+            </article>            
              <div x-show="updateprofile" x-transition
                         class="absolute left-[0%] top-[5%] flex h-[200%] w-full items-center justify-center bg-zinc-950/30">
                         <div x-data="{ buying: false }" class="h-max w-[65vw] absolute top-20 border-4 border-black bg-zinc-200 px-2 py-4">

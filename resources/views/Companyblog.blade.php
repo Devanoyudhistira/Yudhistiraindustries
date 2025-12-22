@@ -21,7 +21,7 @@
             @foreach ($datablogs as $blog)
                 <article
                     class="lg:w-90 w-90 h-60 lg:h-69 mt-3 pb-4 flex flex-col overflow-hidden rounded-xl rounded-t-2xl border-x-2 border-b-2 border-t-8 border-black border-x-zinc-100 border-t-zinc-800 shadow-[8px_8px_0px_black]">
-                    <img src="{{ asset("storage/" . $blog["thumbnail"]) }}" class="h-[50%] w-full object-cover object-center"
+                     <img src="{{ asset(($blog['thumbnail'])) }}" class="h-[50%] w-full object-cover object-center"
                         alt="thumbnail">
                     <div class="flex w-full justify-between px-3">
                         <div>

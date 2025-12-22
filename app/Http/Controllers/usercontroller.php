@@ -7,11 +7,8 @@ use App\Models\productsmodel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
-
 use Illuminate\Http\Request;
+use App\Http\Controllers\httpUploader;
 
 class usercontroller extends Controller
 {
@@ -27,9 +24,8 @@ class usercontroller extends Controller
     {
         return view("signin");
     }
-    public function SignIn(Request $request)
+    public function SignIn(Request $request, httpUploader $httpUploader)
     {
-        dd(config('cloudinary.cloud_url'));
         $request->validate
         (
             [
@@ -52,18 +48,13 @@ class usercontroller extends Controller
             ]
         );
         $email = $request->input("email");
-        $name = $request->input("name");        
-        if($request->hasFile('profileimage')){
-        $image = $request->file("profileimage");
-           $imageresult = Cloudinary::uploadfile(
-    $image->getRealPath(),
-    ['folder' => 'profileimage']
-)->getSecureUrl();
-        }
-        else {
+        $name = $request->input("name");
+        if ($request->hasFile('profileimage')) {
+            $image = $request->file('profileimage');
+            $image = $httpUploader->uploadfile($image, "profileimage/");
+        } else {
             $image = null;
-        } 
-        dd($imageresult);
+        }
         $password = $request->input("password");
         $createuser = User::create([
             'name' => $name,
@@ -76,8 +67,9 @@ class usercontroller extends Controller
             Auth::login($createuser);
             $request->session()->regenerate();
             return redirect("/profile");
-        };
-        return back()->withErrors(["password" => "opeartionfail"]);
+        }
+        ;
+        return back()->withErrors(["password" => "operation fail"]);
     }
     public function login(Request $request)
     {
@@ -112,7 +104,8 @@ class usercontroller extends Controller
             "productprice" => $productprices,
             "productimage" => $productimage,
             "seller" => $usersell,
-            "purchasedate" => $productdate,]);
+            "purchasedate" => $productdate,
+        ]);
     }
     public function profiles()
     {
@@ -136,7 +129,7 @@ class usercontroller extends Controller
         ]);
     }
 
-    public function updateuser(Request $request)
+    public function updateuser(Request $request, httpUploader $httpUploader)
     {
         $newinput = $request->input();
         $request->validate
@@ -152,17 +145,18 @@ class usercontroller extends Controller
                 "newname.unique" => "the username is already used",
             ]
         );
-        $usertarget = User::find(Auth::user()->getKey());        
-        $previusimage = $usertarget["profileimage"] ?? "" ;
+        $usertarget = User::find(Auth::user()->getKey());
+        $previusimage = $usertarget["profileimage"] ?? "";
         Storage::disk("public")->delete($previusimage);
-        $storefile = $request->file("newimage")->store("proflleimage", "public");
-        $updateresult = $usertarget->update(
+        $newimage = $request->file("newimage");
+        $image = $httpUploader->uploadfile($newimage, "profileimage/");
+        $usertarget->update(
             [
                 'name' => $newinput["newname"],
-                "profileimage" => $storefile
+                "profileimage" => $image
             ]
         );
         return redirect("profile")->with("success", "profile has been updated");
-    }    
+    }
 
 }
