@@ -4,12 +4,12 @@
     <main class="mt-10 flex flex-col" x-data="{ flashmassage: true, updateprofile: false }">
         @if (session('success'))
             <x-flash-massage :success="true">
-                {{ Str::limit(session('success'), 40) }} 
+                {{session('success')}} 
             </x-flash-massage>
         @endif
         @if ($errors->any())
             <x-flash-massage :success="false">
-                {{-- {{ $errors->first() }}  --}} product name cannot be more than 8
+                {{ $errors->first() }}  
             </x-flash-massage>
         @endif
         <div
@@ -45,7 +45,7 @@
                     @endif
                 </div>
                 <div id="itemcontainer" class="w-full">
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4" x-show="invoicedata" x-transition>
+                    <div class="grid  plcae-items-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4" x-show="invoicedata" x-transition>
                         @if (count($products) <= 0)
                             <x-productform>
                                 <x-slot:text1>
@@ -75,7 +75,7 @@
                         @if (count($seller) <= 0)
                             <x-productform>
                                 <x-slot:text1>
-                                    <h1 class="font-bebas text-3xl mf:text-4xl lg:text-6xl font-bold"> you not sell anything yet :(</h1>
+                                    <h1 class="font-bebas text-3xl md:text-4xl lg:text-6xl font-bold"> you not sell anything yet :(</h1>
                                 </x-slot:text1>
                                 <x-slot:text2>
                                     click <button x-on:click="productform = true"
@@ -85,7 +85,7 @@
                             </x-productform>
                         @else
                             <div x-on:click="productform = true" x-show="!invoicedata" x-transition
-                                class="w-50 lg:w-70 h-60 lg:h-65 mt-4 flex flex-col items-center justify-center gap-3 rounded-[10px] border-2 border-dashed border-black bg-zinc-100 px-2 py-3">
+                                class="w-50 lg:w-70 h-60 lg:h-65 mt-4 -ml-2 lg:ml-0 flex flex-col items-center justify-center gap-3 rounded-[10px] border-2 border-dashed border-black bg-zinc-100 px-2 py-3">
                                 <button> <i class="bi bi-plus text-8xl"></i></button>
                                 <h1 class="font-zalando text-3xl font-medium"> sell product here </h1>
                             </div>

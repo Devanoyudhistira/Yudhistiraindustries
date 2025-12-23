@@ -36,7 +36,7 @@
             <label x-data="{
                 imgprev: null
             }" for="profileimage"
-                class="h-55 border-3 relative grid w-[50%] lg:w-full cursor-pointer place-items-center border-dashed">
+                class="h-55 border-3 relative grid w-[76%] md:w-[95%] lg:w-full cursor-pointer place-items-center border-dashed">
                 <!-- placeholder -->
                 <div x-show="!imgprev" class="flex flex-col items-center justify-center gap-2">
                     <i class="bi bi-images text-3xl text-zinc-800"></i>

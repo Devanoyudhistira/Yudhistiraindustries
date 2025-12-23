@@ -21,7 +21,7 @@ class usercontroller extends Controller
         return view("login", ["pagelogin"]);
     }
     public function signinpage(Request $request)
-    {
+    {        
         return view("signin");
     }
     public function SignIn(Request $request, httpUploader $httpUploader)

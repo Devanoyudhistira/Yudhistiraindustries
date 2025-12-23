@@ -16,16 +16,16 @@ class httpUploader extends Controller
         $absolutePath = storage_path("app/private/{$tmpPath}");
         $image = file_get_contents($absolutePath);
         Storage::disk("local")->delete($tmpPath);         
-
+        $filename = basename($tmpPath);
         $result = Http::withHeaders([
             'Authorization' => 'Bearer ' . $serviceKey,
             'apikey' => $serviceKey,
             'Content-Type' => 'image/png',
         ])->withBody($image, 'image/png')
             ->post(
-                 "https://ntrtbiyiefmemqbcjsad.supabase.co/storage/v1/object/" . $bucket .  "/{$path}/{$tmpPath}"
+                 "https://ntrtbiyiefmemqbcjsad.supabase.co/storage/v1/object/" . $bucket .  "/{$path}/{$filename}"
             );
-            $body = json_decode($result->body(), true);
-        return "https://ntrtbiyiefmemqbcjsad.supabase.co/storage/v1/object/public/{$body["Key"]}";
+            $body = json_decode($result->body(), true);                        
+        return "https://ntrtbiyiefmemqbcjsad.supabase.co/storage/v1/object/public/{$bucket}/{$path}/{$filename}";
     }
 }
